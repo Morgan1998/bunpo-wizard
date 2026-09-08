@@ -1,5 +1,10 @@
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
 }
 
 // 1. Lifecycle states for a duel
@@ -21,7 +26,6 @@ model User {
   deletedAt    DateTime? @map("deleted_at")
 
   // Relations
-  // Since User relates to Battle 3 different ways, we give each a custom relation name
   battlesChallenged Battle[]     @relation("ChallengerBattles")
   battlesReceived   Battle[]     @relation("OpponentBattles")
   battlesWon        Battle[]     @relation("WonBattles")
@@ -39,7 +43,7 @@ model Battle {
   llmFeedback    String?      @map("llm_feedback") @db.Text
 
   // Foreign Keys & Relations
-  challengerId String @map("challenger_id")     
+  challengerId String @map("challenger_id")
   challenger   User   @relation("ChallengerBattles", fields: [challengerId], references: [id], onDelete: Cascade)
 
   opponentId String @map("opponent_id")
@@ -69,7 +73,6 @@ model Submission {
   userId String @map("user_id")
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // CRITICAL: A player cannot submit twice to the same duel
   @@unique([battleId, userId])
   @@map("submissions")
 }
