@@ -3,7 +3,7 @@ services:
     image: postgres:16-alpine
     container_name: bunpo_wizard_db
     environment:
-      POSTGRES_USER: bunpo_wizard_user
+      POSTGRES_USER: morgan
       POSTGRES_PASSWORD: bunpo_wizard_password
       POSTGRES_DB: bunpo_wizard_dev
     ports:
