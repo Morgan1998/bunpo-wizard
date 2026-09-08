@@ -1,21 +1,69 @@
-// use prisma-next
-
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  username  String?
-  name      String?
-  posts     Post[]
-  createdAt TimestamptzString @default(now())
-  updatedAt temporal.updatedAtString()
+datasource db {
+  provider = "postgresql"
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-  createdAt TimestamptzString @default(now())
-  updatedAt temporal.updatedAtString()
+// 1. Lifecycle states for a duel
+enum BattleStatus {
+  PENDING
+  IN_PROGRESS
+  EVALUATING
+  COMPLETED
+  DECLINED
+}
+
+// 2. User account model
+model User {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  // Relations
+  // Since User relates to Battle 3 different ways, we give each a custom relation name
+  battlesChallenged Battle[]     @relation("ChallengerBattles")
+  battlesReceived   Battle[]     @relation("OpponentBattles")
+  battlesWon        Battle[]     @relation("WonBattles")
+  submissions       Submission[]
+}
+
+// 3. The grammar duel arena
+model Battle {
+  id             String       @id @default(uuid())
+  grammarTopic   String
+  promptSentence String       @db.Text
+  status         BattleStatus @default(PENDING)
+  llmFeedback    String?      @db.Text
+
+  // Foreign Keys & Relations
+  challengerId String
+  challenger   User   @relation("ChallengerBattles", fields: [challengerId], references: [id], onDelete: Cascade)
+
+  opponentId String
+  opponent   User   @relation("OpponentBattles", fields: [opponentId], references: [id], onDelete: Cascade)
+
+  winnerId String?
+  winner   User?   @relation("WonBattles", fields: [winnerId], references: [id], onDelete: SetNull)
+
+  submissions Submission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 4. Player translations
+model Submission {
+  id              String   @id @default(uuid())
+  translationText String   @db.Text
+  submittedAt     DateTime @default(now())
+
+  // Foreign Keys & Relations
+  battleId String
+  battle   Battle @relation(fields: [battleId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // CRITICAL: A player cannot submit twice to the same duel
+  @@unique([battleId, userId])
 }
