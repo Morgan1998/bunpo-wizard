@@ -25,6 +25,8 @@ model User {
   battlesReceived   Battle[]     @relation("OpponentBattles")
   battlesWon        Battle[]     @relation("WonBattles")
   submissions       Submission[]
+
+  @@map("users")
 }
 
 // 3. The grammar duel arena
@@ -49,6 +51,8 @@ model Battle {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("battles")
 }
 
 // 4. Player translations
@@ -66,4 +70,5 @@ model Submission {
 
   // CRITICAL: A player cannot submit twice to the same duel
   @@unique([battleId, userId])
+  @@map("submissions")
 }
