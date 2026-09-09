@@ -1,6 +1,7 @@
 import express, { type Request, type Response } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import { errorHandler } from './middleware/errorHandler';
 
 const app = express();
 
@@ -22,5 +23,7 @@ app.get('/api/health', (_req: Request, res: Response) => {
     message: 'Bunpo Wizard API is health, Yay! :)',
   });
 });
+
+app.use(errorHandler);
 
 export default app;
