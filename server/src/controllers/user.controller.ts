@@ -23,10 +23,10 @@ export const searchUsers = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-  const searchTerm = req.valid?.query.username;
-  const currentUserId = req.user!.id;
-
   try {
+    const searchTerm = req.valid?.query.username;
+    const currentUserId = req.user!.id;
+
     const users = await userService.searchUsersByUsername(
       searchTerm,
       currentUserId,
