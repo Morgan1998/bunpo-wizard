@@ -26,7 +26,11 @@ export const validate = (
       return;
     }
 
-    req[location] = result.data;
+    if (!req.valid) {
+      req.valid = {};
+    }
+    req.valid[location] = result.data;
+
     next();
   };
 };

@@ -23,3 +23,28 @@ export const createUser = async (input: RegisterInput) => {
 
   return user;
 };
+
+export const searchUsersByUsername = async (
+  searchTerm: string,
+  currentUserId: string,
+) => {
+  const users = await db.user.findMany({
+    where: {
+      username: {
+        contains: searchTerm,
+        mode: 'insensitive',
+      },
+      deletedAt: null,
+      id: {
+        not: currentUserId, // can't send a battle invite to yourself hahahaha
+      },
+    },
+    select: {
+      id: true,
+      username: true,
+    },
+    take: 10,
+  });
+
+  return users;
+};

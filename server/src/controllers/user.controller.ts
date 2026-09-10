@@ -17,3 +17,25 @@ export const createUser = async (
     next(err);
   }
 };
+
+export const searchUsers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  const searchTerm = req.valid?.query.username;
+  const currentUserId = req.user!.id;
+
+  try {
+    const users = await userService.searchUsersByUsername(
+      searchTerm,
+      currentUserId,
+    );
+
+    res.status(200).json({
+      users,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
