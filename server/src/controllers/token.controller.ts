@@ -1,7 +1,7 @@
 import { type Request, type Response, type NextFunction } from 'express';
 import * as tokenService from '../services/token.service';
 
-export const login = async (
+export const createToken = async (
   req: Request,
   res: Response,
   next: NextFunction,

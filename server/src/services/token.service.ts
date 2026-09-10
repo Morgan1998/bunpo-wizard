@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { db } from '../lib/db';
+import { db } from '../config/db';
 import { type LoginInput, type JwtPayload } from '../validators/auth.validator';
 import { AppError } from '../utils/AppError';
 
@@ -25,15 +25,15 @@ export const createToken = async (input: LoginInput) => {
     throw new Error('JWT_SECRET is not defined!');
   }
 
-  const payload: JwtPayload = { userId: user!.id };
-  const token = jwt.sign(payload, secret!, { expiresIn: '7d' });
+  const payload: JwtPayload = { userId: user.id };
+  const token = jwt.sign(payload, secret, { expiresIn: '7d' });
 
   return {
     token,
     user: {
-      id: user?.id,
-      username: user?.username,
-      email: user?.email,
+      id: user.id,
+      username: user.username,
+      email: user.email,
     },
   };
 };
