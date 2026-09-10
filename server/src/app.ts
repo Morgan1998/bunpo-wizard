@@ -3,6 +3,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { errorHandler } from './middleware/errorHandler';
 import userRoutes from './routes/user.routes';
+import tokenRoutes from './routes/token.routes';
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.get('/api/health', (_req: Request, res: Response) => {
 });
 
 app.use('/api/users', userRoutes);
+app.use('/api/tokens', tokenRoutes);
 
 app.use(errorHandler);
 
