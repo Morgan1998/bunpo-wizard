@@ -25,7 +25,7 @@ export const createToken = async (
   }
 };
 
-export const logout = (req: Request, res: Response): void => {
+export const deleteToken = (req: Request, res: Response): void => {
   res.clearCookie('token', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',

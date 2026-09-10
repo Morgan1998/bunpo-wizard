@@ -1,6 +1,5 @@
 import { type Request, type Response, type NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { z } from 'zod';
 import {
   jwtPayloadSchema,
   type JwtPayload,
@@ -9,7 +8,7 @@ import { AppError } from '../utils/AppError';
 
 export const authenticate = (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ): void => {
   const token = req.cookies.token;

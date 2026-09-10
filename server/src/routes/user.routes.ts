@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { register } from '../controllers/user.controller';
+import { createUser } from '../controllers/user.controller';
 import { validate } from '../middleware/validate';
 import { registerSchema } from '../validators/auth.validator';
 
 const router = Router();
 
-router.post('/', validate(registerSchema), register);
+router.post('/', validate(registerSchema), createUser);
 
 export default router;

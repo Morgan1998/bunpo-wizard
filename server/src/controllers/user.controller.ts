@@ -1,7 +1,7 @@
 import { type Request, type Response, type NextFunction } from 'express';
 import * as userService from '../services/user.service';
 
-export const register = async (
+export const createUser = async (
   req: Request,
   res: Response,
   next: NextFunction,
