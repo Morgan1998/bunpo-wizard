@@ -9,7 +9,7 @@ export const createBattle = async (
   try {
     const battle = await battlesService.createBattle(
       req.valid!.body,
-      req.body.id,
+      req.user!.id,
     );
     res.status(201).json({ battle });
   } catch (err) {
