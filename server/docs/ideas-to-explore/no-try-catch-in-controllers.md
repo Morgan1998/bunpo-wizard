@@ -1,0 +1,1 @@
+Since Express 5 wraps all controller functions in an implicit `try/catch` block, we technically don't need to write an essentially nested `try/catch` block. I'm still learning about it though, so I'll stick with writing out the explicit nested `try/catch` blocks for now.

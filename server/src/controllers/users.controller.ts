@@ -1,5 +1,5 @@
 import { type Request, type Response, type NextFunction } from 'express';
-import * as userService from '../services/user.service';
+import * as userService from '../services/users.service';
 
 export const createUser = async (
   req: Request,

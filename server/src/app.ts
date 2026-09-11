@@ -2,8 +2,8 @@ import express, { type Request, type Response } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { errorHandler } from './middleware/errorHandler';
-import userRoutes from './routes/user.routes';
-import tokenRoutes from './routes/token.routes';
+import userRoutes from './routes/users.routes';
+import tokenRoutes from './routes/tokens.routes';
 
 const app = express();
 

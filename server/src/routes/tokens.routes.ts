@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createToken, deleteToken } from '../controllers/token.controller';
+import { createToken, deleteToken } from '../controllers/tokens.controller';
 import { validate } from '../middleware/validate';
 import { loginSchema } from '../validators/auth.validator';
 

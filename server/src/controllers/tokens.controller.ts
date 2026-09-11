@@ -1,5 +1,5 @@
 import { type Request, type Response, type NextFunction } from 'express';
-import * as tokenService from '../services/token.service';
+import * as tokenService from '../services/tokens.service';
 
 export const createToken = async (
   req: Request,

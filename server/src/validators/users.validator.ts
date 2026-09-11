@@ -1,4 +1,4 @@
-import z from 'zod';
+import * as z from 'zod';
 
 export const searchUserQuerySchema = z.object({
   username: z.string().trim().min(1, 'Username query parameter is required'),

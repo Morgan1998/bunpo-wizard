@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { createUser, searchUsers } from '../controllers/user.controller';
+import { createUser, searchUsers } from '../controllers/users.controller';
 import { validate } from '../middleware/validate';
 import { registerSchema } from '../validators/auth.validator';
-import { searchUserQuerySchema } from '../validators/user.validator';
+import { searchUserQuerySchema } from '../validators/users.validator';
 import { authenticate } from '../middleware/authenticate';
 
 const router = Router();
