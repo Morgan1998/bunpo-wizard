@@ -1,7 +1,9 @@
 import * as z from 'zod';
+import { TranslationDirection } from '@prisma/client';
 
-export const createBattleSchema = z.object({
-  opponentId: z.string().trim().min(1),
+export const createBattleInputSchema = z.object({
+  opponentId: z.string().trim().pipe(z.uuid('Invalid opponent ID format')),
   grammarTopic: z.string().trim().min(1).max(400),
+  translationDirection: z.enum(TranslationDirection),
 });
-export type CreateBattle = z.infer<typeof createBattleSchema>;
+export type CreateBattleInput = z.infer<typeof createBattleInputSchema>;

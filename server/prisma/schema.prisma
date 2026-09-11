@@ -16,6 +16,11 @@ enum BattleStatus {
   DECLINED
 }
 
+enum TranslationDirection {
+  JA_T0_EN
+  EN_TO_JA
+}
+
 // 2. User account model
 model User {
   id           String    @id @default(uuid())
@@ -36,26 +41,27 @@ model User {
 
 // 3. The grammar duel arena
 model Battle {
-  id             String       @id @default(uuid())
-  grammarTopic   String       @map("grammar_topic")
-  promptSentence String       @map("prompt_sentence") @db.Text
-  status         BattleStatus @default(PENDING)
-  llmFeedback    String?      @map("llm_feedback") @db.Text
+  id                   String               @id @default(uuid())
+  grammarTopic         String               @map("grammar_topic")
+  promptSentence       String               @map("prompt_sentence") @db.Text
+  translationDirection TranslationDirection @default(JA_T0_EN) @map("translation_direction")
+  status               BattleStatus         @default(PENDING)
+  llmFeedback          String?              @map("llm_feedback") @db.Text
 
   // Foreign Keys & Relations
-  challengerId String @map("challenger_id")
-  challenger   User   @relation("ChallengerBattles", fields: [challengerId], references: [id], onDelete: Cascade)
+  challengerId         String               @map("challenger_id")
+  challenger           User                 @relation("ChallengerBattles", fields: [challengerId], references: [id], onDelete: Cascade)
 
-  opponentId String @map("opponent_id")
-  opponent   User   @relation("OpponentBattles", fields: [opponentId], references: [id], onDelete: Cascade)
+  opponentId           String               @map("opponent_id")
+  opponent             User                 @relation("OpponentBattles", fields: [opponentId], references: [id], onDelete: Cascade)
 
-  winnerId String? @map("winner_id")
-  winner   User?   @relation("WonBattles", fields: [winnerId], references: [id], onDelete: SetNull)
+  winnerId             String?              @map("winner_id")
+  winner               User?                @relation("WonBattles", fields: [winnerId], references: [id], onDelete: SetNull)
 
-  submissions Submission[]
+  submissions          Submission[]
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt            DateTime             @default(now()) @map("created_at")
+  updatedAt            DateTime             @updatedAt @map("updated_at")
 
   @@map("battles")
 }

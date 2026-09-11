@@ -1,3 +1,13 @@
 import { Router } from 'express';
+import { authenticate } from '../middleware/authenticate';
+import { validate } from '../middleware/validate';
+import { createBattleInputSchema } from '../validators/battles.validator';
+import { createBattle } from '../controllers/battles.controller';
 
 const router = Router();
+
+router.use(authenticate);
+
+router.post('/', validate(createBattleInputSchema, 'body'), createBattle);
+
+export default router;

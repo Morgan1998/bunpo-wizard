@@ -1,0 +1,3 @@
+So as of now I write an enum for my Zod schema, and write a separate enum for my Prisma models. So if basically have to be careful to make sure they're exactly the same. However, there's apparently a way to only write the enum once and have it used by both places. I'm gonna keep them separate for now (so I can actually get a working MVP up before I'm an old man), but this could be a good thing to try and refactor later on.
+
+UPDATE: So I've decided to start doing this. Turns out in zod v4, they overloaded the z.enum() method so now we can just pass in the prisma-made runtime object for the enum we made in `schema.prisma`.

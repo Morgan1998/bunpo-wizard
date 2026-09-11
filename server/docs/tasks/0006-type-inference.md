@@ -1,0 +1,1 @@
+Learn more about type inference and when to do it vs when to annotate. The reason is because I learned it's fine to let my service function infer the type of the returned object via Prisma. However, it's kind of tripping me up a little and I want to dive a little deeper to gain a solid understanding of this.
