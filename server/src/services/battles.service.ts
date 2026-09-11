@@ -5,9 +5,9 @@ import * as llmService from '../services/llm.services';
 
 export const createBattle = async (
   input: CreateBattleInput,
-  currentUserIdId: string,
-): Promise<object> => {
-  if (input.opponentId === currentUserIdId) {
+  currentUserId: string,
+) => {
+  if (input.opponentId === currentUserId) {
     throw new AppError(
       'You cannot challenge yourself you silly goose!',
       400,
@@ -19,7 +19,7 @@ export const createBattle = async (
       id: input.opponentId,
       deletedAt: null,
       NOT: {
-        id: currentUserIdId,
+        id: currentUserId,
       },
     },
   });
@@ -41,7 +41,7 @@ export const createBattle = async (
       grammarTopic: input.grammarTopic,
       promptSentence: promptSentence,
       translationDirection: input.translationDirection,
-      challengerId: currentUserIdId,
+      challengerId: currentUserId,
       opponentId: input.opponentId,
     },
     select: {

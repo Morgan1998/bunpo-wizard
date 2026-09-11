@@ -17,7 +17,7 @@ enum BattleStatus {
 }
 
 enum TranslationDirection {
-  JA_T0_EN
+  JA_TO_EN
   EN_TO_JA
 }
 
@@ -44,7 +44,7 @@ model Battle {
   id                   String               @id @default(uuid())
   grammarTopic         String               @map("grammar_topic")
   promptSentence       String               @map("prompt_sentence") @db.Text
-  translationDirection TranslationDirection @default(JA_T0_EN) @map("translation_direction")
+  translationDirection TranslationDirection @default(JA_TO_EN) @map("translation_direction")
   status               BattleStatus         @default(PENDING)
   llmFeedback          String?              @map("llm_feedback") @db.Text
 

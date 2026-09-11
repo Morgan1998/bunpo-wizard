@@ -8,6 +8,6 @@ const router = Router();
 
 router.use(authenticate);
 
-router.post('/', validate(createBattleInputSchema, 'body'), createBattle);
+router.post('/', validate(createBattleInputSchema), createBattle);
 
 export default router;

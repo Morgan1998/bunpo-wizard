@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import { errorHandler } from './middleware/errorHandler';
 import userRoutes from './routes/users.routes';
 import tokenRoutes from './routes/tokens.routes';
+import battleRoutes from './routes/battles.routes';
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.get('/api/health', (_req: Request, res: Response) => {
 
 app.use('/api/users', userRoutes);
 app.use('/api/tokens', tokenRoutes);
+app.use('/api/battles', battleRoutes);
 
 app.use(errorHandler);
 
