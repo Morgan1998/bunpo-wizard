@@ -1,7 +1,7 @@
 import express, { type Request, type Response } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import { errorHandler } from './middleware/errorHandler';
+import { globalErrorHandler } from './middleware/globalErrorHandler';
 import userRoutes from './routes/users.routes';
 import tokenRoutes from './routes/tokens.routes';
 import battleRoutes from './routes/battles.routes';
@@ -31,6 +31,6 @@ app.use('/api/users', userRoutes);
 app.use('/api/tokens', tokenRoutes);
 app.use('/api/battles', battleRoutes);
 
-app.use(errorHandler);
+app.use(globalErrorHandler);
 
 export default app;
