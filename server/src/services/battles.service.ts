@@ -70,3 +70,36 @@ export const createBattle = async (
 
   return battle;
 };
+
+export const getBattles = async (currentUserId: string) => {
+  const battles = await db.battle.findMany({
+    where: {
+      OR: [{ challengerId: currentUserId }, { opponentId: currentUserId }],
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    select: {
+      id: true,
+      grammarTopic: true,
+      promptSentence: true,
+      translationDirection: true,
+      status: true,
+      challenger: {
+        select: {
+          id: true,
+          username: true,
+        },
+      },
+      opponent: {
+        select: {
+          id: true,
+          username: true,
+        },
+      },
+      createdAt: true,
+    },
+  });
+
+  return battles;
+};
