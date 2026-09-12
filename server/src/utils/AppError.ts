@@ -1,4 +1,4 @@
-import { type ApiErrorDetail } from '../types/api';
+import { type ApiErrorDetail } from '../types/errors';
 
 export class AppError extends Error {
   public statusCode: number;

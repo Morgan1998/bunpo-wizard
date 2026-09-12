@@ -1,7 +1,7 @@
 import { type Request, type Response, type NextFunction } from 'express';
 import { Prisma } from '@prisma/client';
 import { AppError } from '../utils/AppError';
-import { type ApiErrorResponse } from '../types/api';
+import { type ApiErrorResponse } from '../types/errors';
 
 export const globalErrorHandler = (
   err: unknown,

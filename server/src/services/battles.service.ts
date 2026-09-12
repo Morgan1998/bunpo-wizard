@@ -32,6 +32,23 @@ export const createBattle = async (
     );
   }
 
+  const existingPendingDuel = await db.battle.findFirst({
+    where: {
+      challengerId: currentUserId,
+      opponentId: input.opponentId,
+      grammarTopic: input.grammarTopic,
+      status: 'PENDING',
+    },
+  });
+
+  if (existingPendingDuel) {
+    throw new AppError(
+      `You already have a pending challenge with this player for this grammar topic! oopsies :D`,
+      409,
+      'CONFLICT',
+    );
+  }
+
   const promptSentence = await llmService.generatePromptSentence(
     input.grammarTopic,
     input.translationDirection,

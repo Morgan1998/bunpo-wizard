@@ -1,7 +1,7 @@
 import { type Request, type Response, type NextFunction } from 'express';
 import { type ZodType } from 'zod';
 import { AppError } from '../utils/AppError';
-import { type ApiErrorDetail } from '../types/api';
+import { type ApiErrorDetail } from '../types/errors';
 
 type RequestLocation = 'body' | 'query' | 'params';
 
