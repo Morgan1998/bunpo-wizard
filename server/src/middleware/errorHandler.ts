@@ -1,6 +1,7 @@
 import { type Request, type Response, type NextFunction } from 'express';
 import { Prisma } from '@prisma/client';
 import { AppError } from '../utils/AppError';
+import { type ApiErrorResponse } from '../types/api';
 
 export const errorHandler = (
   err: unknown,
@@ -9,23 +10,28 @@ export const errorHandler = (
   _next: NextFunction,
 ): void => {
   if (err instanceof AppError) {
-    res.status(err.statusCode).json({
-      errs: {
+    const response: ApiErrorResponse = {
+      error: {
         code: err.code,
         message: err.message,
+        details: err.details,
       },
-    });
+    };
+    res.status(err.statusCode).json(response);
     return;
   }
 
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     if (err.code === 'P2002') {
       const target = (err.meta?.target as string[])?.join(',') || 'field';
-      res.status(409).json({
+      const response: ApiErrorResponse = {
         error: {
-          code: 'CONFLICT',
-          message: `A record with this ${target} already exists.`,
+          code: err.code,
+          message: err.message,
         },
+      };
+      res.status(409).json({
+        response,
       });
       return;
     }

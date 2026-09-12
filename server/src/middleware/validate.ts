@@ -1,5 +1,7 @@
 import { type Request, type Response, type NextFunction } from 'express';
 import { type ZodType } from 'zod';
+import { AppError } from '../utils/AppError';
+import { type ApiErrorDetail } from '../types/api';
 
 type RequestLocation = 'body' | 'query' | 'params';
 
@@ -11,19 +13,21 @@ export const validate = (
     const result = schema.safeParse(req[location]);
 
     if (!result.success) {
-      const errorMessages = result.error.issues.map((issue) => ({
-        field: issue.path.join('.'),
-        message: issue.message,
-      }));
+      const errorMessages: ApiErrorDetail[] = result.error.issues.map(
+        (issue) => ({
+          field: issue.path.join('.'),
+          message: issue.message,
+        }),
+      );
 
-      res.status(400).json({
-        error: {
-          code: 'VALIDATION_ERROR',
-          message: 'Invalid request payload',
-          details: errorMessages,
-        },
-      });
-      return;
+      return next(
+        new AppError(
+          'Invalid request ${location}',
+          400,
+          'VALIDATION_ERROR',
+          errorMessages,
+        ),
+      );
     }
 
     if (!req.valid) {
