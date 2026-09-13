@@ -26,3 +26,9 @@ This app is a decoupled PERN stack app with a `React` frontend and a separate `E
 
 - Namespace Imports for Validators, Controllers, and Services
 - Routes are ordered based on CRUD operations. Public routes go above the `router.use(authenticate)` middleware, and private routes go below it.
+
+## Tools Used
+
+- Docker
+- DBeaver
+- Postman

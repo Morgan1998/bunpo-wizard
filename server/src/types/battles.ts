@@ -1,11 +1,7 @@
 import { type BattleStatus, type TranslationDirection } from '@prisma/client';
 
-export interface BattleSummaryResponse {
+export interface BattleSummary {
   id: string;
-  grammarTopic: string;
-  promptSentence: string;
-  translationDirection: TranslationDirection;
-  status: BattleStatus;
   challenger: {
     id: string;
     username: string;
@@ -14,23 +10,18 @@ export interface BattleSummaryResponse {
     id: string;
     username: string;
   };
+  grammarTopic: string;
+  translationDirection: TranslationDirection;
+  promptSentence: string;
+  status: BattleStatus;
   createdAt: string | Date;
+  updatedAt: string | Date;
 }
 
 export interface GetBattlesResponse {
-  battles: BattleSummaryResponse[];
+  battles: BattleSummary[];
 }
 
 export interface UpdateBattleResponse {
-  battle: {
-    id: string;
-    updatedAt: string | Date;
-    createdAt: string | Date;
-    opponentId: string;
-    challengerId: string;
-    grammarTopic: string;
-    promptSentence: string;
-    translationDirection: TranslationDirection;
-    status: BattleStatus;
-  };
+  battle: BattleSummary;
 }

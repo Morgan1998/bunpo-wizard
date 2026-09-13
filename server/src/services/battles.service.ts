@@ -70,8 +70,14 @@ export const createBattle = async (
     },
     select: {
       id: true,
+      challenger: { select: { id: true, username: true } },
+      opponent: { select: { id: true, username: true } },
+      grammarTopic: true,
+      translationDirection: true,
+      promptSentence: true,
       status: true,
-      opponentId: true,
+      createdAt: true,
+      updatedAt: true,
     },
   });
 
@@ -88,23 +94,14 @@ export const getBattles = async (currentUserId: string) => {
     },
     select: {
       id: true,
+      challenger: { select: { id: true, username: true } },
+      opponent: { select: { id: true, username: true } },
       grammarTopic: true,
-      promptSentence: true,
       translationDirection: true,
+      promptSentence: true,
       status: true,
-      challenger: {
-        select: {
-          id: true,
-          username: true,
-        },
-      },
-      opponent: {
-        select: {
-          id: true,
-          username: true,
-        },
-      },
       createdAt: true,
+      updatedAt: true,
     },
   });
 
@@ -147,14 +144,14 @@ export const updateBattle = async (
     data: { status: status },
     select: {
       id: true,
-      updatedAt: true,
-      createdAt: true,
-      opponentId: true,
-      challengerId: true,
+      challenger: { select: { id: true, username: true } },
+      opponent: { select: { id: true, username: true } },
       grammarTopic: true,
-      promptSentence: true,
       translationDirection: true,
+      promptSentence: true,
       status: true,
+      createdAt: true,
+      updatedAt: true,
     },
   });
 
