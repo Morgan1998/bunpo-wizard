@@ -108,6 +108,65 @@ export const getBattles = async (currentUserId: string) => {
   return battles;
 };
 
+export const getBattleById = async (
+  currentUserId: string,
+  battleId: string,
+) => {
+  const battle = await db.battle.findUnique({
+    where: {
+      id: battleId,
+    },
+    select: {
+      id: true,
+      challenger: { select: { id: true, username: true } },
+      opponent: { select: { id: true, username: true } },
+      grammarTopic: true,
+      translationDirection: true,
+      promptSentence: true,
+      status: true,
+      createdAt: true,
+      updatedAt: true,
+      submissions: {
+        select: {
+          id: true,
+          userId: true,
+          translationText: true,
+          submittedAt: true,
+        },
+      },
+      winnerId: true,
+      llmFeedback: true,
+    },
+  });
+
+  if (!battle) {
+    throw new AppError('Battle not found!', 403, 'NOT_FOUND');
+  }
+
+  if (
+    currentUserId !== battle.challenger.id &&
+    currentUserId !== battle.opponent.id
+  ) {
+    throw new AppError(
+      `Huh, you're not a participant in the duel. What are you doin snooping around here...`,
+      403,
+      'FORBIDDEN',
+    );
+  }
+
+  if (battle.status === 'COMPLETED') {
+    return battle;
+  } else {
+    const filteredBattle = {
+      ...battle,
+      submissions: battle.submissions.filter(
+        (submission) => submission.userId === currentUserId,
+      ),
+    };
+    return filteredBattle;
+  }
+};
+
 export const updateBattle = async (
   currentUserId: string,
   battleId: string,

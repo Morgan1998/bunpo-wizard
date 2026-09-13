@@ -2,7 +2,6 @@ import type { Request, Response, NextFunction } from 'express';
 import type { BattleResponse, GetBattlesResponse } from '../types/battles';
 
 import * as BattlesService from '../services/battles.service';
-import * as BattleValidator from '../validators/battles.validator';
 
 export const createBattle = async (
   req: Request,
@@ -11,7 +10,7 @@ export const createBattle = async (
 ): Promise<void> => {
   try {
     const currentUserId = req.user!.id;
-    const body: BattleValidator.CreateBattleInput = req.valid!.body;
+    const body = req.valid!.body;
 
     const battle = await BattlesService.createBattle(
       currentUserId,
@@ -48,17 +47,34 @@ export const updateBattle = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const params: BattleValidator.UpdateBattleInputParams = req.valid!.params;
-    const body: BattleValidator.UpdateBattleInputBody = req.valid!.body;
+    const battleId = req.valid!.params.battleId;
+    const status = req.valid!.body.status;
     const currentUserId = req.user!.id;
 
     const updatedBattle = await BattlesService.updateBattle(
       currentUserId,
-      params.battleId,
-      body.status,
+      battleId,
+      status,
     );
 
     res.status(200).json({ battle: updatedBattle });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getBattleById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const currentUserId = req.user!.id;
+    const battleId = req.valid!.params.battleId;
+
+    const battle = await BattlesService.getBattleById(currentUserId, battleId);
+
+    res.status(200).json({ battle });
   } catch (err) {
     next(err);
   }
