@@ -1,10 +1,13 @@
 import { type Request, type Response, type NextFunction } from 'express';
 
+import type { SearchUsersResponse } from '../types/users';
+import type { AuthResponse } from '../types/auth';
+
 import * as UserService from '../services/users.service';
 
 export const createUser = async (
   req: Request,
-  res: Response,
+  res: Response<AuthResponse>,
   next: NextFunction,
 ): Promise<void> => {
   try {
@@ -21,7 +24,7 @@ export const createUser = async (
 
 export const searchUsers = async (
   req: Request,
-  res: Response,
+  res: Response<SearchUsersResponse>,
   next: NextFunction,
 ): Promise<void> => {
   try {

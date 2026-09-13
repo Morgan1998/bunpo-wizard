@@ -38,6 +38,7 @@ export const createToken = async (input: LoginInput) => {
       id: user.id,
       username: user.username,
       email: user.email,
+      createdAt: user.createdAt,
     },
   };
 };

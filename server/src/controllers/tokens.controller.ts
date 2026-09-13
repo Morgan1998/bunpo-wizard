@@ -1,10 +1,13 @@
 import type { Request, Response, NextFunction } from 'express';
 
+import type { AuthResponse } from '../types/auth';
+import type { MessageResponse } from '../types/api';
+
 import * as TokenService from '../services/tokens.service';
 
 export const createToken = async (
   req: Request,
-  res: Response,
+  res: Response<AuthResponse>,
   next: NextFunction,
 ): Promise<void> => {
   try {
@@ -18,7 +21,7 @@ export const createToken = async (
     });
 
     res.status(200).json({
-      message: 'Logged in successfully! Welcome home wizard',
+      message: 'Logged in successfully! Welcome home wizard.',
       user,
     });
   } catch (err) {
@@ -26,7 +29,10 @@ export const createToken = async (
   }
 };
 
-export const deleteToken = (req: Request, res: Response): void => {
+export const deleteToken = (
+  req: Request,
+  res: Response<MessageResponse>,
+): void => {
   res.clearCookie('token', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -34,6 +40,6 @@ export const deleteToken = (req: Request, res: Response): void => {
   });
 
   res.status(200).json({
-    message: 'Logged out successfully! See ya later Wizard',
+    message: 'Logged out successfully. See ya later Wizard!',
   });
 };

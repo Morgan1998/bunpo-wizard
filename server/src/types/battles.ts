@@ -1,15 +1,10 @@
 import { type BattleStatus, type TranslationDirection } from '@prisma/client';
+import type { PublicUser } from './users';
 
 export interface BattleSummary {
   id: string;
-  challenger: {
-    id: string;
-    username: string;
-  };
-  opponent: {
-    id: string;
-    username: string;
-  };
+  challenger: PublicUser;
+  opponent: PublicUser;
   grammarTopic: string;
   translationDirection: TranslationDirection;
   promptSentence: string;
@@ -18,10 +13,10 @@ export interface BattleSummary {
   updatedAt: string | Date;
 }
 
-export interface GetBattlesResponse {
-  battles: BattleSummary[];
+export interface BattleResponse {
+  battle: BattleSummary;
 }
 
-export interface UpdateBattleResponse {
-  battle: BattleSummary;
+export interface GetBattlesResponse {
+  battles: BattleSummary[];
 }

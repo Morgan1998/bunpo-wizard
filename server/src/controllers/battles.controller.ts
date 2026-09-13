@@ -1,15 +1,12 @@
 import type { Request, Response, NextFunction } from 'express';
-import type {
-  GetBattlesResponse,
-  UpdateBattleResponse,
-} from '../types/battles';
+import type { BattleResponse, GetBattlesResponse } from '../types/battles';
 
 import * as BattlesService from '../services/battles.service';
 import * as BattleValidator from '../validators/battles.validator';
 
 export const createBattle = async (
   req: Request,
-  res: Response,
+  res: Response<BattleResponse>,
   next: NextFunction,
 ): Promise<void> => {
   try {
@@ -47,7 +44,7 @@ export const getBattles = async (
 
 export const updateBattle = async (
   req: Request,
-  res: Response<UpdateBattleResponse>,
+  res: Response<BattleResponse>,
   next: NextFunction,
 ): Promise<void> => {
   try {
