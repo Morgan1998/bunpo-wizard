@@ -1,6 +1,8 @@
-import bcrypt from 'bcrypt';
 import { db } from '../config/db';
-import { type RegisterInput } from '../validators/auth.validator';
+
+import bcrypt from 'bcrypt';
+
+import type { RegisterInput } from '../validators/auth.validator';
 
 export const createUser = async (input: RegisterInput) => {
   const { username, email, password } = input;

@@ -2,11 +2,7 @@ import { Router } from 'express';
 import { authenticate } from '../middleware/authenticate';
 import { validate } from '../middleware/validate';
 
-import {
-  createBattleInputSchema,
-  updateBattleInputBodySchema,
-  updateBattleInputParamsSchema,
-} from '../validators/battles.validator';
+import * as BattlesValidator from '../validators/battles.validator';
 import * as BattlesController from '../controllers/battles.controller';
 
 const router = Router();
@@ -15,7 +11,7 @@ router.use(authenticate);
 
 router.post(
   '/',
-  validate(createBattleInputSchema),
+  validate(BattlesValidator.createBattleInputSchema),
   BattlesController.createBattle,
 );
 
@@ -23,8 +19,8 @@ router.get('/', BattlesController.getBattles);
 
 router.patch(
   '/:battleId',
-  validate(updateBattleInputParamsSchema, 'params'),
-  validate(updateBattleInputBodySchema, 'body'),
+  validate(BattlesValidator.updateBattleInputParamsSchema, 'params'),
+  validate(BattlesValidator.updateBattleInputBodySchema, 'body'),
   BattlesController.updateBattle,
 );
 

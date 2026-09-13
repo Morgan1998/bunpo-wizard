@@ -1,23 +1,28 @@
 import { db } from '../config/db';
+
 import { AppError } from '../utils/AppError';
-import { type CreateBattleInput } from '../validators/battles.validator';
-import * as llmService from '../services/llm.services';
-import type { BattleStatus } from '@prisma/client';
+
+import type { BattleStatus, TranslationDirection } from '@prisma/client';
+
+import * as LlmService from './llm.service';
 
 export const createBattle = async (
-  input: CreateBattleInput,
   currentUserId: string,
+  opponentId: string,
+  grammarTopic: string,
+  translationDirection: TranslationDirection,
 ) => {
-  if (input.opponentId === currentUserId) {
+  if (opponentId === currentUserId) {
     throw new AppError(
       'You cannot challenge yourself you silly goose!',
       400,
       'INVALID_REQUEST',
     );
   }
+
   const opponent = await db.user.findFirst({
     where: {
-      id: input.opponentId,
+      id: opponentId,
       deletedAt: null,
       NOT: {
         id: currentUserId,
@@ -36,8 +41,8 @@ export const createBattle = async (
   const existingPendingDuel = await db.battle.findFirst({
     where: {
       challengerId: currentUserId,
-      opponentId: input.opponentId,
-      grammarTopic: input.grammarTopic,
+      opponentId: opponentId,
+      grammarTopic: grammarTopic,
       status: 'PENDING',
     },
   });
@@ -50,17 +55,18 @@ export const createBattle = async (
     );
   }
 
-  const promptSentence = await llmService.generatePromptSentence(
-    input.grammarTopic,
-    input.translationDirection,
+  const promptSentence = await LlmService.generatePromptSentence(
+    grammarTopic,
+    translationDirection,
   );
+
   const battle = await db.battle.create({
     data: {
-      grammarTopic: input.grammarTopic,
+      grammarTopic: grammarTopic,
       promptSentence: promptSentence,
-      translationDirection: input.translationDirection,
+      translationDirection: translationDirection,
       challengerId: currentUserId,
-      opponentId: input.opponentId,
+      opponentId: opponentId,
     },
     select: {
       id: true,

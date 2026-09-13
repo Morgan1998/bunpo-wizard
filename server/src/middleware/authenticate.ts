@@ -1,10 +1,11 @@
-import { type Request, type Response, type NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import {
-  jwtPayloadSchema,
-  type JwtPayload,
-} from '../validators/auth.validator';
+
 import { AppError } from '../utils/AppError';
+
+import type { Request, Response, NextFunction } from 'express';
+import type { JwtPayload } from '../validators/auth.validator';
+
+import * as AuthValidator from '../validators/auth.validator';
 
 export const authenticate = (
   req: Request,
@@ -30,7 +31,7 @@ export const authenticate = (
 
   try {
     const rawDecoded = jwt.verify(token, secret);
-    const result = jwtPayloadSchema.safeParse(rawDecoded);
+    const result = AuthValidator.jwtPayloadSchema.safeParse(rawDecoded);
 
     if (!result.success) {
       return next(

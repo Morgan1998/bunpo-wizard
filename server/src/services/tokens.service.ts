@@ -1,8 +1,11 @@
+import { db } from '../config/db';
+
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { db } from '../config/db';
-import { type LoginInput, type JwtPayload } from '../validators/auth.validator';
+
 import { AppError } from '../utils/AppError';
+
+import type { LoginInput, JwtPayload } from '../validators/auth.validator';
 
 export const createToken = async (input: LoginInput) => {
   const { email, password } = input;
@@ -26,6 +29,7 @@ export const createToken = async (input: LoginInput) => {
   }
 
   const payload: JwtPayload = { userId: user.id };
+
   const token = jwt.sign(payload, secret, { expiresIn: '7d' });
 
   return {

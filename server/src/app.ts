@@ -16,16 +16,7 @@ app.use(
 );
 
 app.use(express.json()); // this parses incoming JSON request bodies into req.body
-
 app.use(cookieParser()); // this one parses incoming Cookie headers into req.cookies
-
-app.get('/api/health', (_req: Request, res: Response) => {
-  // This is just just a basic health check endpoint to get started with
-  res.status(200).json({
-    status: 'ok',
-    message: 'Bunpo Wizard API is health, Yay! :)',
-  });
-});
 
 app.use('/api/users', userRoutes);
 app.use('/api/tokens', tokenRoutes);

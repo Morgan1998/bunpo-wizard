@@ -1,5 +1,6 @@
-import { type Request, type Response, type NextFunction } from 'express';
-import * as tokenService from '../services/tokens.service';
+import type { Request, Response, NextFunction } from 'express';
+
+import * as TokenService from '../services/tokens.service';
 
 export const createToken = async (
   req: Request,
@@ -7,7 +8,7 @@ export const createToken = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const { token, user } = await tokenService.createToken(req.body);
+    const { token, user } = await TokenService.createToken(req.body);
 
     res.cookie('token', token, {
       httpOnly: true,

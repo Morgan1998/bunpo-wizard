@@ -1,5 +1,6 @@
 import { type Request, type Response, type NextFunction } from 'express';
-import * as userService from '../services/users.service';
+
+import * as UserService from '../services/users.service';
 
 export const createUser = async (
   req: Request,
@@ -7,7 +8,7 @@ export const createUser = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const user = await userService.createUser(req.body);
+    const user = await UserService.createUser(req.body);
 
     res.status(201).json({
       message: 'User registered successfully! Yay :)',
@@ -27,7 +28,7 @@ export const searchUsers = async (
     const searchTerm = req.valid?.query.username;
     const currentUserId = req.user!.id;
 
-    const users = await userService.searchUsersByUsername(
+    const users = await UserService.searchUsersByUsername(
       searchTerm,
       currentUserId,
     );
