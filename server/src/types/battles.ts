@@ -1,5 +1,4 @@
 import { type BattleStatus, type TranslationDirection } from '@prisma/client';
-import { jwtPayloadSchema } from '../validators/auth.validator';
 
 export interface BattleSummaryResponse {
   id: string;
@@ -20,4 +19,18 @@ export interface BattleSummaryResponse {
 
 export interface GetBattlesResponse {
   battles: BattleSummaryResponse[];
+}
+
+export interface UpdateBattleResponse {
+  battle: {
+    id: string;
+    updatedAt: string | Date;
+    createdAt: string | Date;
+    opponentId: string;
+    challengerId: string;
+    grammarTopic: string;
+    promptSentence: string;
+    translationDirection: TranslationDirection;
+    status: BattleStatus;
+  };
 }

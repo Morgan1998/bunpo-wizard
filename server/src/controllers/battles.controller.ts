@@ -1,6 +1,8 @@
 import { type Request, type Response, type NextFunction } from 'express';
 import * as battlesService from '../services/battles.service';
 import { type GetBattlesResponse } from '../types/battles';
+import type { UpdateBattleInputBody } from '../validators/battles.validator';
+import type { UpdateBattleInputParams } from '../validators/battles.validator';
 
 export const createBattle = async (
   req: Request,
@@ -26,6 +28,27 @@ export const getBattles = async (
   try {
     const battles = await battlesService.getBattles(req.user!.id);
     res.status(200).json({ battles });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const updateBattle = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const params: UpdateBattleInputParams = req.valid!.params;
+    const body: UpdateBattleInputBody = req.valid!.body;
+    const userId = req.user!.id;
+    const updatedBattle = await battlesService.updateBattle(
+      userId,
+      params.battleId,
+      body.status,
+    );
+
+    res.status(200).json({ battle: updatedBattle });
   } catch (err) {
     next(err);
   }

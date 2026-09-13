@@ -2,6 +2,7 @@ import { db } from '../config/db';
 import { AppError } from '../utils/AppError';
 import { type CreateBattleInput } from '../validators/battles.validator';
 import * as llmService from '../services/llm.services';
+import type { BattleStatus } from '@prisma/client';
 
 export const createBattle = async (
   input: CreateBattleInput,
@@ -102,4 +103,54 @@ export const getBattles = async (currentUserId: string) => {
   });
 
   return battles;
+};
+
+export const updateBattle = async (
+  currentUserId: string,
+  battleId: string,
+  status: BattleStatus,
+) => {
+  const battle = await db.battle.findUnique({
+    where: {
+      id: battleId,
+    },
+    select: {
+      opponentId: true,
+      status: true,
+    },
+  });
+
+  if (!battle) {
+    throw new AppError('Battle not found!', 404, 'NOT_FOUND');
+  }
+
+  if (battle.opponentId !== currentUserId) {
+    throw new AppError(
+      'Only the challenged opponent can respond!',
+      403,
+      'FORBIDDEN',
+    );
+  }
+
+  if (battle.status !== 'PENDING') {
+    throw new AppError('This battle is no longer pending', 400, 'BAD_REQUEST');
+  }
+
+  const updatedBattle = await db.battle.update({
+    where: { id: battleId },
+    data: { status: status },
+    select: {
+      id: true,
+      updatedAt: true,
+      createdAt: true,
+      opponentId: true,
+      challengerId: true,
+      grammarTopic: true,
+      promptSentence: true,
+      translationDirection: true,
+      status: true,
+    },
+  });
+
+  return updatedBattle;
 };
